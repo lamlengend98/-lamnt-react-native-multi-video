@@ -1,0 +1,31 @@
+{
+  "name": "react-native-multiple-video-player",
+  "version": "1.1.0",
+  "description": "A video player for React Native with multiple controls and can handle multiple videos",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anmolgupta0206/react-native-multi-video-player.git"
+  },
+  "keywords": [
+    "react-native",
+    "react-native-video",
+    "react native video player",
+    "multiple video player",
+    "video player",
+    "multiple videos"
+  ],
+  "author": "Anmol Gupta",
+  "license": "MIT",
+  "dependencies": {
+    "react-native-orientation-locker": "^1.1.8",
+    "react-native-video": "^5.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/anmolgupta0206/react-native-multi-video-player/issues"
+  },
+  "homepage": "https://github.com/anmolgupta0206/react-native-multi-video-player#readme"
+}
