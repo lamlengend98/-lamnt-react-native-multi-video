@@ -25,6 +25,7 @@ export default class VideoPlayer extends Component {
         onPause: () => { },
         onPlay: () => { },
         rate: 1,
+        pause: false,
         resizeMode: 'contain',
         showBottomProgresssBar: true,
         showLockOrientationIcon: true,
@@ -57,6 +58,12 @@ export default class VideoPlayer extends Component {
             Orientation.getDeviceOrientation(this._rotateDevice);
         this._addOrientationListner();
         Platform.OS == 'android' && this._androidBackHandlerListner();
+    }
+    componentDidUpdate(prevProps) {
+        if (prevProps.pause !== this.props.pause) {
+            console.log('this.props.pause', this.props.pause);
+            this.setState({play: !this.props.pause})
+        }
     }
 
     componentWillUnmount() {
