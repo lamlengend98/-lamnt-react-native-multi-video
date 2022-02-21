@@ -18,6 +18,7 @@ export interface VideoProperties {
   resizeMode?: "stretch" | "contain" | "cover" | "none"; // via Image#resizeMode
   showBottomProgresssBar?: boolean;
   showLockOrientationIcon?: boolean;
+  pause?: boolean;
   /**
    * Event props
    */
