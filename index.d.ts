@@ -28,6 +28,7 @@ export interface VideoProperties {
   onLoadStart?(event): void;
   onPause?(): void;
   onPlay?(): void;
+  noBackButton?: boolean
 }
 
 export default class VideoPlayer extends React.Component<VideoProperties> {

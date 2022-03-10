@@ -29,6 +29,7 @@ export default class VideoPlayer extends Component {
         resizeMode: 'contain',
         showBottomProgresssBar: true,
         showLockOrientationIcon: true,
+        noBackButton: false,
     };
 
     constructor(props) {
@@ -209,10 +210,11 @@ export default class VideoPlayer extends Component {
         let { locked, currentTrack } = this.state;
         let { showLockOrientationIcon, titleStyle, data } = this.props;
         return (<View style={styles.panelTopContainer}>
+            {!this.props.noBackButton ? 
             <Button
                 onPress={this._onBackPress}
                 icon={BackIcon}
-            />
+            /> : <View />}
             <Text style={[styles.title, titleStyle]}>{(data[currentTrack] || '').title || ''}</Text>
             {!!showLockOrientationIcon && <Button
                 icon={locked ? LockIcon : OpenLockIcon}
