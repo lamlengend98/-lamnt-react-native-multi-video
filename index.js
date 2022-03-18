@@ -47,6 +47,7 @@ export default class VideoPlayer extends Component {
             seekableDuration: 0,
             showMenu: false,
             showPanel: false,
+            noBackButton: false,
         };
         this.timeoutRef = '';
         this.player = '';
@@ -210,11 +211,12 @@ export default class VideoPlayer extends Component {
         let { locked, currentTrack } = this.state;
         let { showLockOrientationIcon, titleStyle, data } = this.props;
         return (<View style={styles.panelTopContainer}>
-            {!this.props.noBackButton ? 
+            {this.props.noBackButton ? <View /> :
             <Button
                 onPress={this._onBackPress}
                 icon={BackIcon}
-            /> : <View />}
+            />
+        }
             <Text style={[styles.title, titleStyle]}>{(data[currentTrack] || '').title || ''}</Text>
             {!!showLockOrientationIcon && <Button
                 icon={locked ? LockIcon : OpenLockIcon}
@@ -338,7 +340,8 @@ export default class VideoPlayer extends Component {
 
         return (
             <SafeAreaView style={{ backgroundColor: 'black' }}>
-                <StatusBar barStyle='light-content' translucent backgroundColor='rgba(0,0,0,0.7)' hidden={!!(!showPanel && isFullscreen)} />
+                <StatusBar hidden />
+                {/* <StatusBar barStyle='light-content' translucent backgroundColor='rgba(0,0,0,0.7)' hidden={!!(!showPanel && isFullscreen)} /> */}
                 {!!data.length && <View>
                     <View style={{ height: '100%' }}>
                         <Video
