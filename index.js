@@ -24,6 +24,8 @@ export default class VideoPlayer extends Component {
         onLoadStart: () => { },
         onPause: () => { },
         onPlay: () => { },
+        onError: (error) => { },
+        onPlayingVideo: () => { },
         rate: 1,
         pause: false,
         resizeMode: 'contain',
@@ -63,7 +65,6 @@ export default class VideoPlayer extends Component {
     }
     componentDidUpdate(prevProps) {
         if (prevProps.pause !== this.props.pause) {
-            console.log('this.props.pause', this.props.pause);
             this.setState({play: !this.props.pause})
         }
     }
@@ -336,7 +337,6 @@ export default class VideoPlayer extends Component {
     render() {
         let { currentTrack, isFullscreen, play, rate, showMenu, showPanel } = this.state;
         let { resizeMode, showBottomProgresssBar, skipLimit = 0, data = [] } = this.props;
-        console.log('rate', rate);
 
         return (
             <SafeAreaView style={{ backgroundColor: 'black' }}>
@@ -348,7 +348,12 @@ export default class VideoPlayer extends Component {
                             onEnd={this._onVideoEnd}
                             onLoad={(e) => this._toggleLoad(false, e)}
                             onLoadStart={(e) => this._toggleLoad(true, e)}
-                            onProgress={({ currentTime, playableDuration, seekableDuration }) => this.setState({ playableDuration, seekableDuration, currentTime })}
+                            onProgress={({ currentTime, playableDuration, seekableDuration }) => {
+                                this.setState({ playableDuration, seekableDuration, currentTime })
+                                if(this.props.onPlayingVideo) {
+                                    this.props.onPlayingVideo({ currentTime, playableDuration, seekableDuration })
+                                }
+                            }}
                             paused={!play}
                             rate={rate}
                             ref={ref => this.player = ref}

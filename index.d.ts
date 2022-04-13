@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { LoadError } from 'react-native-video';
 
 export interface VideoProperties {
   /**
@@ -29,6 +30,8 @@ export interface VideoProperties {
   onLoadStart?(event): void;
   onPause?(): void;
   onPlay?(): void;
+  onError?(error: LoadError): void;
+  onPlayingVideo?({ currentTime, playableDuration, seekableDuration }): void;
 }
 
 export default class VideoPlayer extends React.Component<VideoProperties> {
