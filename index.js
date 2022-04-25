@@ -17,13 +17,13 @@ export default class VideoPlayer extends Component {
         controlTimeout: 2000,
         data: [],
         defaultVideoIndex: 0,
+        delay: 0,
         fullscreenOrientation: 'all',
         loop: 'none',
         onEnd: () => { },
         onLoad: () => { },
         onLoadStart: () => { },
         onPause: () => { },
-        onPressFullscreen: () => { },
         onPlay: () => { },
         onError: (error) => { },
         onPlayingVideo: () => { },
@@ -152,14 +152,16 @@ export default class VideoPlayer extends Component {
         let { loop, data, autoPlayNextVideo, onEnd } = this.props;
         let { currentTrack } = this.state;
         onEnd(e);
-        LayoutAnimation.easeInEaseOut();
-        loop == 'one' ?
-            this.player.seek(0) :
-            loop == 'all' ?
-                this.setState({ currentTrack: (currentTrack == data.length - 1) ? 0 : (currentTrack + 1) })
-                :
-                (loop == 'none' && autoPlayNextVideo && (currentTrack < data.length - 1)) ? this.setState({ currentTrack: currentTrack + 1 })
-                    : this.setState({ replay: true }, () => this._onTogglePanel(true))
+        setTimeout(() => {
+            LayoutAnimation.easeInEaseOut();
+            loop == 'one' ?
+                this.player.seek(0) :
+                loop == 'all' ?
+                    this.setState({ currentTrack: (currentTrack == data.length - 1) ? 0 : (currentTrack + 1) })
+                    :
+                    (loop == 'none' && autoPlayNextVideo && (currentTrack < data.length - 1)) ? this.setState({ currentTrack: currentTrack + 1 })
+                        : this.setState({ replay: true }, () => this._onTogglePanel(true))
+        }, this.props.delay)
     }
 
     _onChangeTrack = (track) => {
@@ -168,14 +170,10 @@ export default class VideoPlayer extends Component {
     }
 
     _onToggleFullscreen = () => {
-        if(this.props.onPressFullscreen) {
-            this.props.onPressFullscreen?.()
-        } else {
-            let { isFullscreen } = this.state;
-            this.setState({ isFullscreen: !isFullscreen, });
-            isFullscreen ? Orientation.lockToPortrait() : Orientation.lockToLandscapeLeft();
-            this._onTogglePanel(true);
-        }
+        let { isFullscreen } = this.state;
+        this.setState({ isFullscreen: !isFullscreen, });
+        isFullscreen ? Orientation.lockToPortrait() : Orientation.lockToLandscapeLeft();
+        this._onTogglePanel(true);
     }
 
     _onToggleLock = () => {

@@ -16,6 +16,7 @@ export interface VideoProperties {
   poster?: string;
   posterResizeMode?: "stretch" | "contain" | "cover" | "none"; // via Image#resizeMode
   rate?: number;
+  delay?: number;
   resizeMode?: "stretch" | "contain" | "cover" | "none"; // via Image#resizeMode
   showBottomProgresssBar?: boolean;
   showLockOrientationIcon?: boolean;
@@ -30,7 +31,6 @@ export interface VideoProperties {
   onLoadStart?(event): void;
   onPause?(): void;
   onPlay?(): void;
-  onPressFullscreen?(): void;
   onError?(error: LoadError): void;
   onPlayingVideo?({ currentTime, playableDuration, seekableDuration }): void;
 }
