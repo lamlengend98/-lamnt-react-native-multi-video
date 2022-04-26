@@ -27,6 +27,7 @@ export default class VideoPlayer extends Component {
         onPlay: () => { },
         onError: (error) => { },
         onPlayingVideo: () => { },
+        onPressFullscreen: () => { },
         rate: 1,
         pause: false,
         resizeMode: 'contain',
@@ -170,10 +171,14 @@ export default class VideoPlayer extends Component {
     }
 
     _onToggleFullscreen = () => {
-        let { isFullscreen } = this.state;
-        this.setState({ isFullscreen: !isFullscreen, });
-        isFullscreen ? Orientation.lockToPortrait() : Orientation.lockToLandscapeLeft();
-        this._onTogglePanel(true);
+        if(this.props.onPressFullscreen) {
+            this.props.onPressFullscreen()
+        } else {
+            let { isFullscreen } = this.state;
+            this.setState({ isFullscreen: !isFullscreen, });
+            isFullscreen ? Orientation.lockToPortrait() : Orientation.lockToLandscapeLeft();
+            this._onTogglePanel(true);
+        }
     }
 
     _onToggleLock = () => {
