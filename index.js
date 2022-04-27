@@ -30,6 +30,7 @@ export default class VideoPlayer extends Component {
         onPressFullscreen: () => { },
         rate: 1,
         pause: false,
+        prevNextTime: false,
         resizeMode: 'contain',
         showBottomProgresssBar: true,
         showLockOrientationIcon: true,
@@ -192,6 +193,9 @@ export default class VideoPlayer extends Component {
     _onSeek = (val) => {
         this.timeoutRef && clearTimeout(this.timeoutRef)
         this.setState({ play: false, currentTime: val });
+        if(this.state.replay) {
+            this.setState({replay: false})
+        }
     }
 
     _onSeekEnd = (e) => {
@@ -282,13 +286,30 @@ export default class VideoPlayer extends Component {
     _renderPanelCenter = () => {
         let { play, replay, locked, currentTrack, loading } = this.state;
         let { data, loadingComponent } = this.props;
+        console.log('this.state.currentTime', this.state.playableDuration);
         return (
             <View style={styles.controlButtonsContainer}>
                 <View style={styles.buttonStyle}>
-                    {(!locked && !!currentTrack) && <Button
+                    {this.props.prevNextTime ?
+                    <Button
                         icon={PreviousIcon}
-                        onPress={() => this._onChangeTrack(currentTrack - 1)}
-                    />}
+                        onPress={() => {
+                            if(this.state.replay) {
+                                this.setState({replay: false})
+                            }
+                            if(this.state.currentTime - 10 > 0) {
+                                this.player.seek(this.state.currentTime - 10)
+                                this.setState((state) => {
+                                    return {currentTime: state.currentTime - 10};
+                                    })
+                            } else {
+                            this.player.seek(0)
+                            this.setState((state) => {
+                                return {currentTime: 0};
+                                })
+                            }
+                        }}
+                    /> : <View />}
                 </View>
                 <View style={styles.buttonStyle}>
                     {loading ?
@@ -308,10 +329,35 @@ export default class VideoPlayer extends Component {
                     }
                 </View>
                 <View style={styles.buttonStyle}>
-                    {(!locked && (currentTrack != data.length - 1)) && <Button
+                    {this.props.prevNextTime ?
+                    <Button
                         icon={NextIcon}
-                        onPress={() => this._onChangeTrack(currentTrack + 1)}
-                    />}
+                        onPress={() => {
+                            if(this.state.replay) {
+                                this.setState({replay: false})
+                            }
+                            if(Platform.OS === 'android') {
+                                this.player.seek(this.state.currentTime + 10)
+                                this.setState((state) => {
+                                    return {currentTime: state.currentTime + 10};
+                                  })
+                            } else {
+                                if(this.state.currentTime + 10 < this.state.playableDuration) {
+                                    this.player.seek(this.state.currentTime + 10)
+                                    this.setState((state) => {
+                                        return {currentTime: state.currentTime + 10};
+                                      })
+                                } else {
+    
+                                this.player.seek(this.state.playableDuration)
+                                this.setState(() => {
+                                    return {currentTime: this.state.playableDuration};
+                                  })
+                                }
+                            }
+                            
+                        }}
+                    /> : <View />}
                 </View>
             </View>
         )

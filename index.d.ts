@@ -22,6 +22,7 @@ export interface VideoProperties {
   showLockOrientationIcon?: boolean;
   pause?: boolean;
   noBackButton?: boolean;
+  prevNextTime?: boolean;
   /**
    * Event props
    */
